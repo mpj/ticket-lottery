@@ -36,4 +36,20 @@ vows.describe('canWeWin').addBatch({
         },
     },
 
+    'Case 10/10/5/1': {
+
+        topic: function() {
+            lottery.canWeGetTickets({
+                entrants: 10,
+                winners: 10,
+                tickets: 5,
+                friends: 1
+            }, this.callback);
+        },
+
+        'returns correct probability': function (probability) {
+            assert.equal(probability, 1.0000000000)
+        },
+    },
+
 }).export(module); // Export the Suite
