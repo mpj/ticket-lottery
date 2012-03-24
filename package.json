@@ -1,0 +1,8 @@
+{
+    "name": "ticket-lottery"
+  , "version": "0.0.1"
+  , "private": true
+  , "dependencies": {
+      "vows":     ">= 0.6.1"
+  }
+}
