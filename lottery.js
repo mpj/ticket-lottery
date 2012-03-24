@@ -1,8 +1,13 @@
 
 exports.canWeGetTickets = function (opts, cb) {
 
-	probability = (opts.friends / opts.entrants) * opts.winners
-
-	cb(null, probability)
+	totalProbLose = 1
+	while(opts.friends--) {
+		probabilityLose = ((opts.entrants - opts.winners) / opts.entrants)
+		totalProbLose *= probabilityLose
+		opts.entrants--
+	}
+	
+	cb(null, (1-totalProbLose).toFixed(10))
 
 }
