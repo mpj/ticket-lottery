@@ -4,6 +4,22 @@ var vows    = require('vows'),
 
 vows.describe('canWeWin').addBatch({
 
+    /*
+    'Simulate': {
+        topic: function() {
+            return simulateDrawing({
+                entrants: 10,
+                winners: 6,
+                tickets: 1,
+                friends: 6
+            })
+        },
+
+        'Debugging': function(res) {
+            console.log("res", res)
+        }
+    },*/
+
     '100 entrants (just me, single winner, infinite tickets)':
         createGetTickersContext({
                 entrants: 100
@@ -20,7 +36,17 @@ vows.describe('canWeWin').addBatch({
             entrants: 100,
             friends: 2,
             winners: 10
-        })
+        }),
+
+    '100 entrants, 2 friends, 10 winners, 1 tickets each': 
+        createGetTickersContext({
+            entrants: 100,
+            friends: 2,
+            winners: 10,
+            tickets: 1
+        }),
+
+
 
 }).export(module); 
 
@@ -31,6 +57,7 @@ function createGetTickersContext(opts) {
         },
 
         'returns plausible probability': function (probability) {
+
             assert.isTrue(isPlausible(probability, opts))
         }
     }
@@ -38,6 +65,10 @@ function createGetTickersContext(opts) {
 
 function isPlausible(result, opts) {
     var simulatedProbability = simulateDrawing(opts)
+    
+    // UNCOMMENT TO DEBUG
+    // console.log("Checking result" , result, "against simulation", simulatedProbability)
+    
     var absoluteError = 0.001
     return (result < simulatedProbability + absoluteError) &&
            (result > simulatedProbability - absoluteError);
