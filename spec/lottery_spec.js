@@ -3,53 +3,92 @@ var vows    = require('vows'),
     lottery = require('../lottery');
 
 vows.describe('canWeWin').addBatch({
-    
-    'Case 100/10/2/1': {
+
+    '100 entrants (just me, single winner, infinite tickets)': {
 
         topic: function() {
             lottery.canWeGetTickets({
-                entrants: 100,
-                winners: 10,
-                tickets: 2,
-                friends: 1
+                entrants: 100
             }, this.callback);
         },
 
-        'returns correct probability': function (probability) {
-            assert.equal(probability, 0.1)
-        },
+        'returned probability is plausible': function(probability) {
+            assert.isTrue(isPlausible(probability, {
+                entrants: 100
+            }))
+        }
     },
 
-    'Case 100/10/2/2': {
+    '100 entrants, 2 friends (single winner, infinite tickets)': {
 
         topic: function() {
             lottery.canWeGetTickets({
                 entrants: 100,
-                winners: 10,
-                tickets: 2,
                 friends: 2
             }, this.callback);
         },
 
         'returns correct probability': function (probability) {
-            assert.equal(probability, 0.1909090909)
+            assert.isTrue(isPlausible(probability, {
+                entrants: 100,
+                friends: 2
+            }))
         },
     },
 
-    'Case 10/10/5/1': {
+    '100 entrants, 2 friends, 10 winners (infinite tickets)': {
 
         topic: function() {
             lottery.canWeGetTickets({
-                entrants: 10,
-                winners: 10,
-                tickets: 5,
-                friends: 1
+                entrants: 100,
+                friends: 2,
+                winners: 10
             }, this.callback);
         },
 
         'returns correct probability': function (probability) {
-            assert.equal(probability, 1.0000000000)
+            assert.isTrue(isPlausible(probability, {
+                entrants: 100,
+                friends: 2,
+                winners: 10
+            }))
         },
-    },
+    }
 
-}).export(module); // Export the Suite
+}).export(module); 
+
+
+function isPlausible(result, opts) {
+    var simulatedProbability = simulateDrawing(opts)
+    var absoluteError = 0.0005
+    return (result < simulatedProbability + absoluteError) &&
+           (result > simulatedProbability - absoluteError);
+}
+
+function simulateDrawing(opts, cb) {
+    
+    var entrants = opts.entrants;
+    var winners  = opts.winners ? opts.winners : 1;
+    var friends  = opts.friends ? opts.friends : 1;
+    var tickets  = opts.tickets ? opts.tickets : 99;
+
+    var drawings = 1000000;
+    var wins = 0;
+    for(var i=0;i<drawings;i++) {
+        var winningFriends = 0
+        for(var j=0;j<winners;j++) {
+            var rand = randomInRange(1, entrants-j)
+            var weWonADrawing = ((friends-winningFriends) >= rand)
+            if(weWonADrawing)
+                winningFriends++
+        }
+        if ((winningFriends * tickets) >= friends) {
+            wins++;
+        }
+    }
+    return wins/drawings;
+}
+
+function randomInRange(min, max){
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
