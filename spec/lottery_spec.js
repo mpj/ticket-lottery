@@ -4,63 +4,41 @@ var vows    = require('vows'),
 
 vows.describe('canWeWin').addBatch({
 
-    '100 entrants (just me, single winner, infinite tickets)': {
-
-        topic: function() {
-            lottery.canWeGetTickets({
+    '100 entrants (just me, single winner, infinite tickets)':
+        createGetTickersContext({
                 entrants: 100
-            }, this.callback);
-        },
+        }),
 
-        'returned probability is plausible': function(probability) {
-            assert.isTrue(isPlausible(probability, {
-                entrants: 100
-            }))
-        }
-    },
+    '100 entrants, 2 friends (single winner, infinite tickets)': 
+        createGetTickersContext({
+            entrants: 100,
+            friends: 2
+        }),
 
-    '100 entrants, 2 friends (single winner, infinite tickets)': {
-
-        topic: function() {
-            lottery.canWeGetTickets({
-                entrants: 100,
-                friends: 2
-            }, this.callback);
-        },
-
-        'returns correct probability': function (probability) {
-            assert.isTrue(isPlausible(probability, {
-                entrants: 100,
-                friends: 2
-            }))
-        },
-    },
-
-    '100 entrants, 2 friends, 10 winners (infinite tickets)': {
-
-        topic: function() {
-            lottery.canWeGetTickets({
-                entrants: 100,
-                friends: 2,
-                winners: 10
-            }, this.callback);
-        },
-
-        'returns correct probability': function (probability) {
-            assert.isTrue(isPlausible(probability, {
-                entrants: 100,
-                friends: 2,
-                winners: 10
-            }))
-        },
-    }
+    '100 entrants, 2 friends, 10 winners (infinite tickets)': 
+        createGetTickersContext({
+            entrants: 100,
+            friends: 2,
+            winners: 10
+        })
 
 }).export(module); 
 
+function createGetTickersContext(opts) {
+    return {
+        topic: function() {
+            lottery.canWeGetTickets(opts, this.callback);
+        },
+
+        'returns plausible probability': function (probability) {
+            assert.isTrue(isPlausible(probability, opts))
+        }
+    }
+}
 
 function isPlausible(result, opts) {
     var simulatedProbability = simulateDrawing(opts)
-    var absoluteError = 0.0005
+    var absoluteError = 0.001
     return (result < simulatedProbability + absoluteError) &&
            (result > simulatedProbability - absoluteError);
 }
