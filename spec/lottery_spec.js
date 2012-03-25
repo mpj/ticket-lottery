@@ -46,6 +46,13 @@ vows.describe('canWeWin').addBatch({
             tickets: 1
         }),
 
+    '10 entrants, 10 friends, 10 winners (infinite tickets)': 
+        createGetTickersContext({
+            entrants: 10,
+            winners: 10,
+            friends: 1
+        }),
+
 
 
 }).export(module); 
@@ -67,7 +74,7 @@ function isPlausible(result, opts) {
     var simulatedProbability = simulateDrawing(opts)
     
     // UNCOMMENT TO DEBUG
-    // console.log("Checking result" , result, "against simulation", simulatedProbability)
+    console.log("Checking result" , result, "against simulation", simulatedProbability)
     
     var absoluteError = 0.001
     return (result < simulatedProbability + absoluteError) &&
