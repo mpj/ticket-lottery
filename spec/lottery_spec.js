@@ -38,6 +38,13 @@ vows.describe('canWeWin').addBatch({
             winners: 10
         }),
 
+    '10 entrants, 1 friends, 10 winners (infinite tickets)': 
+    createGetTickersContext({
+        entrants: 10,
+        winners: 10,
+        friends: 1
+    }),
+
     '100 entrants, 2 friends, 10 winners, 1 tickets each': 
         createGetTickersContext({
             entrants: 100,
@@ -46,12 +53,38 @@ vows.describe('canWeWin').addBatch({
             tickets: 1
         }),
 
-    '10 entrants, 10 friends, 10 winners (infinite tickets)': 
+    '10 entrants, 6 friends, 6 winners, 1 tickets each': 
         createGetTickersContext({
             entrants: 10,
-            winners: 10,
-            friends: 1
+            winners: 6,
+            tickets: 1,
+            friends: 6
         }),
+
+    '10 entrants, 6 friends, 6 winners, 1 tickets each': 
+        createGetTickersContext({
+            entrants: 80,
+            winners: 8,
+            tickets: 2,
+            friends: 4
+        }),
+
+    /*
+        Utmaningen här är att vi har fyra vänner på oss
+        att vinna TVÅ gånger. 
+
+        Försök till lösning: Räkna ut risken för att 
+        FÖRLORA två gånger med fyra vänner och invertera det.
+
+
+
+    */
+
+
+
+
+
+
 
 
 
