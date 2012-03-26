@@ -27,7 +27,7 @@ exports.canWeGetTickets = function (opts, cb) {
 			// I.e. we do need to win more than one time,
 			// but have more friends we need wins, giving us
 			// more shots at winning.
-			// ShotsToWin 
+			// ShotsToWin: 4
 			/*
 
 			{
@@ -42,10 +42,20 @@ exports.canWeGetTickets = function (opts, cb) {
 			THe problem with the above solution is that it assumes that
 			all friends must win.
 
-			Can we calculate the odds of 4 people generating a win, and doubling 
-			that?
+			Vi har 80 deltagare i lotteriet.
+			Gubben drar 8 bollar.
+			Vi är 4 personer, och 2 av oss behöver vinna.
+			En person kan inte vinna två gånger.
+			Vad är oddsen för att vi vinner?
+
+			ODDSET FÖR ATT 4 PERSONER VINNER  ^antalet gånger vi behöver vinna?
 			
 			*/
+
+			var winProbability = 1
+			for (var i=0;i<winsNeeded;i++) {
+				winProbability *= chanceOfWinning(entrants-i,winners-i,friends-i)
+			}
 	       
 		}
 
@@ -68,6 +78,7 @@ function chanceOfLosing(participants, winners, friends) {
 	var participantsLeft = participants
 	for (var i=0;i<winners;i++) {
 		p = (participantsLeft-friends) / (participantsLeft);
+		
 		loseProbability *= p
 		participantsLeft--
 	}
