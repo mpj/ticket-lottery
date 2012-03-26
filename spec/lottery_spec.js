@@ -107,7 +107,11 @@ function isPlausible(result, opts) {
     var simulatedProbability = simulateDrawing(opts)
     
     // UNCOMMENT TO DEBUG
-    console.log("Checking result" , result, "against simulation", simulatedProbability)
+    var errMargin = Math.round((result / simulatedProbability) * 100)
+    console.log("Checking result" , result, 
+        "against simulation", simulatedProbability,
+        "("+errMargin+"% error)"
+        )
     
     var absoluteError = 0.001
     return (result < simulatedProbability + absoluteError) &&
