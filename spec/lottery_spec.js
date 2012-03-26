@@ -69,86 +69,22 @@ vows.describe('canWeWin').addBatch({
             friends: 4
         }),
 
-    /*
-        Calculate the probability for all possible cases and combine.
-
-        The number of chars = friends (i.e. the chances we have in the draw)
-        We need to generate the probability of all cases where our group 
-        wins enough times to be able to buy tickets for everyone.
-
-
-        {
-            entrants: 80,
-            winners: 4,
-            tickets: 2,
-            friends: 4
-        }
-
-        Simulated prob: 0.01099723
-
-        WIN cases:
-            4 wins (1 case):
-            WWWW = (4/80)*(3/79)*(2/78)*(1/77)  = .000000632 
-            
-            3 wins:
-            WWWL = (4/80)*(3/79)*(2/78)         = .000048685
-            WWLW = (4/80)*(3/79)       *(1/77)  = .000024659
-            WLWW = (4/80)       *(2/78)*(1/77)  = .00001665
-            LWWW =        (3/79)*(2/78)*(1/77)  = .000012646
-
-            2 wins
-            WWLL = (4/80)*(3/79)                = .001898734
-            WLWL = (4/80)       *(2/78)         = .001282051
-            WLLW = (4/80)*              (1/77)  = .000649351
-            LWWL =        (3/79)*(2/78)         = .00097371
-            LWLW =        (3/79)       *(1/77)  = .000493178
-            LLWW =               (2/78)*(1/77)  = .000333
-
-            .000000632+
-            .000048685+
-            .000024659+
-            .00001665+
-            .000012646+
-            .001898734+
-            .001282051+
-            .000649351+
-            .00097371+
-            .000493178+
-            .000333=.005733296
-
-            // hmmm
-
-            .005733296 * 2 is correct. I wonder if this is 
-            the number of wins needed or just the double?
-
-        {
+    '80 entrants, 5 friends, 4 winners, 2 tickets each': 
+        createGetTickersContext({
             entrants: 80,
             winners: 4,
             tickets: 2,
             friends: 5
-        }
+        }),
 
-        Simulated prob: 0.0004931
-
-        // 3 wins needed
-
-        4 wins (1 case):
-        WWWW = (4/80)*(3/79)*(2/78)*(1/77)  = .000000632 
-        
-        3 wins:
-        WWWL = (4/80)*(3/79)*(2/78)         = .000048685
-        WWLW = (4/80)*(3/79)       *(1/77)  = .000024659
-        WLWW = (4/80)       *(2/78)*(1/77)  = .00001665
-        LWWW =        (3/79)*(2/78)*(1/77)  = .000012646
-
-
-        .000000632+
-        .000048685+
-        .000024659+
-        .00001665+
-        .000012646=.000103272        
-        
-    */
+    /*
+    '100 entrants, 9 friends, 10 winners, 3 tickets each': 
+        createGetTickersContext({
+            entrants: 100,
+            winners: 10,
+            tickets: 3,
+            friends: 9
+        }),*/
 
     'calculateCaseProbability 1': {
         topic: function() {
