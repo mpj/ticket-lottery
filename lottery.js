@@ -42,11 +42,11 @@ module.exports.calculateCaseProbability = function(entrants, winners, caseArr) {
 }
 
 
-module.exports.generateCases = function(friends) {
+module.exports.generateCases = function(winners) {
 
 	var cases = [[0], [1]];
 
-	for(var j=0;j<friends;j++) {
+	for(var j=0;j<winners;j++) {
 		var l=cases.length;
 		for(var i=0;i<l;i++) {
 			var cw = cases[i].slice(0);
