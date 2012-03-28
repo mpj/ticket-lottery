@@ -66,11 +66,17 @@ module.exports.generateCases = function(winners) {
 	return cases;
 }
 
-module.exports.filterCases = function(cases, winsNeeded) {
+module.exports.filterCases = function(cases, winsMinimum, winsMaximum) {
+	if (!winsMaximum) winsMaximum = 99
 	var filteredCases = []
-	for(var i=0;i<cases.length;i++) 
-		if(winCount(cases[i]) >= winsNeeded)
+	for(var i=0;i<cases.length;i++) {
+		var wins = winCount(cases[i]);
+		if (wins >= winsMinimum && wins <= winsMaximum)
 			filteredCases.push(cases[i])
+	}
+		
+
+			
 	return filteredCases;
 }
 
