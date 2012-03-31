@@ -1,6 +1,7 @@
 var vows    = require('vows'),
     assert  = require('assert'),
     lotterySimulator = require('./helpers/lottery_simulator'),
+    generateScenarios = require('../lib/generate_scenarios')
     lottery = require('../lib/lottery');
 
 vows.describe('canWeWin').addBatch({
@@ -90,7 +91,7 @@ vows.describe('canWeWin').addBatch({
     'calculateScenarioProbability 2': {
     	
     	topic: function() {
-    		var scenarios10Winners = lottery.generateCases(10)
+    		var scenarios10Winners = generateScenarios(10)
     		var totalProb = 0
     		for (var i=0;i<scenarios10Winners.length;i++) {
     			var s = scenarios10Winners[i]
@@ -108,7 +109,7 @@ vows.describe('canWeWin').addBatch({
     'calculateScenarioProbability 3': {
     	
     	topic: function() {
-    		var scenarios10Winners = lottery.generateCases(10)
+    		var scenarios10Winners = generateScenarios(10)
 			var scenariosWhereWeGetEnoughTickets = lottery.filterCases(scenarios10Winners, 1, 2)
     		var totalProb = 0
     		for (var i=0;i<scenariosWhereWeGetEnoughTickets.length;i++) {
@@ -124,9 +125,9 @@ vows.describe('canWeWin').addBatch({
     	}
     },
 
-    'generateCases': {
+    'generateScenarios': {
         topic: function() {
-            return lottery.generateCases(4)
+            return generateScenarios(4)
         },
 
         'correct': function(err, cases) {
@@ -185,8 +186,6 @@ function createGetTickersContext(opts) {
         }
     }
 }
-
-
 
 function arrayContainsArray(arrContainer, arrFind) {
     for(var i=0;i<arrContainer.length;i++)
