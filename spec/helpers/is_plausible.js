@@ -1,3 +1,7 @@
+/* 
+ */
+
+
 function isPlausible(result, opts, cb) {
     var simulatedProbability = simulateDrawing(opts, function(simulationResult) {
     	var errorMargin = 0.001
@@ -36,4 +40,4 @@ function randomInRange(min, max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-module.exports.isPlausible = isPlausible
+module.exports = isPlausible

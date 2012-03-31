@@ -1,6 +1,5 @@
 var vows                = require('vows'),
     assert              = require('assert'),
-    lotterySimulator    = require('./helpers/lottery_simulator'),
     generateScenarios   = require('../lib/generate_scenarios'),
     filterScenarios     = require('../lib/filter_scenarios'),
     scenarioProbability = require('../lib/scenario_probability')

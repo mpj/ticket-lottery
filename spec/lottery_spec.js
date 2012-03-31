@@ -1,7 +1,7 @@
 var vows                = require('vows'),
     assert              = require('assert'),
     arrayContainsArray  = require('./helpers/array_contains_array'),
-    lotterySimulator    = require('./helpers/lottery_simulator'),
+    isPlausible         = require('./helpers/is_plausible'),
     lottery             = require('../lib/lottery');
 
 vows.describe('canWeWin').addBatch({
@@ -77,13 +77,13 @@ vows.describe('canWeWin').addBatch({
 function createGetTickersContext(opts) {
     return {
         topic: function() {
-        	var cb = this.callback
+        	var context = this;
             lottery.canWeGetTickets(opts, function(err, probability) {
-            	lotterySimulator.isPlausible(probability, opts, cb);
+            	isPlausible(probability, opts, context.callback);
             });
         },
 
-        'returns plausible probability': function (isPlausibleResult) {
+        'Should returns plausible probability': function (isPlausibleResult) {
             assert.isTrue(isPlausibleResult);
         }
     }

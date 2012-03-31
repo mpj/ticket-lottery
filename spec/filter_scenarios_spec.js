@@ -17,7 +17,7 @@ vows.describe('filterScenarios').addBatch({
             ], 3)
         },
 
-        'should return all scenarios with 3 or more wins': function(filtered) {
+        'Should return all scenarios with 3 or more wins': function(filtered) {
             assert.equal(filtered.length, 4);
             assert.isTrue(arrayContainsArray(filtered, [1,0,1,0,1,1]));
             assert.isTrue(arrayContainsArray(filtered, [0,0,1,0,1,1]));
