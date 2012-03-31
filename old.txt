@@ -1,0 +1,229 @@
+Se det såhär:
+
+Fyra inputs = ett scenario.
+Ett scenario har ett antal fördelaktiga *utfall*, vilket är olika sätt som 
+vännerna kan vinna tillräckligt många gånger för att kunna köpa biljetter till hela gänget.
+
+Ex: 2 vänner som får köpa en biljett vardera kan vinna en dragning
+med 4 vinnare på följande sätt:
+WWLL (samma som WW)
+LLWW 
+LWWL
+WLLW
+LWLW
+WLWL
+
+Utfall som t.ex. LLLW och LLLL är ointressanta eftersom dessa inte innebär tillräckligt många vinster för att vännerna ska kunna gå på musikalen.
+
+Efter att vi identifierat dessa utfall så behöver vi räkna ut sannolikheten att respektive utfall inträffar. 
+
+Ett utfall är uppdelat i flera dragningar. 
+Ex: 10 deltagare/ 4 vänner / 4 dragningar / WLWL
+Första dragningen är vi två vänner.
+Räkna ut sannolikheten för att EN vän vinner den dragningen, och muliplicera med två (antalet vänner.) (1/10)*2
+I just detta utfall förlorar vi andra dragningen, så den hoppar vi över.
+Nu är vi på tredje dragningen. Den första dragningen har vår ena vän vunnit, i den andra vann en "fiende". Det innebär att det är totalt 8 deltagare kvar:
+Sannolikheten för att vår enda vän vinner är = (1/deltagarekvar)*vännerkvar = (1/8)*1
+
+OBS: FELTÄNK HÄR! :P 
+Det har något att göra med att vi glömmer bort att minska sannolikheten iom att det finns färre biljetter kvar. Sannolikheten öker lite för att det blir en färre människa att tävla med, men den minskar ännu mer pga att det förvinner en biljett.
+
+Efter att ha räknat ut detta så behöver vi slå ihop dessa sannolikheter till en på något fint sätt :)
+
+
+
+
+ /*
+        Calculate the probability for all possible cases and combine.
+
+        The number of chars = friends (i.e. the chances we have in the draw)
+        We need to generate the probability of all cases where our group 
+        wins enough times to be able to buy tickets for everyone.
+
+
+        {
+            entrants: 80,
+            winners: 4,
+            tickets: 2,
+            friends: 4
+        }
+
+        Simulated prob: 0.01099723
+
+        WIN cases:
+            4 wins (1 case):
+            WWWW = (4/80)*(3/79)*(2/78)*(1/77)  = .000000632 
+            
+            3 wins:
+            WWWL = (4/80)*(3/79)*(2/78)         = .000048685
+            WWLW = (4/80)*(3/79)       *(1/77)  = .000024659
+            WLWW = (4/80)       *(2/78)*(1/77)  = .00001665
+            LWWW =        (3/79)*(2/78)*(1/77)  = .000012646
+
+            2 wins
+            WWLL = (4/80)*(3/79)                = .001898734
+            WLWL = (4/80)       *(2/78)         = .001282051
+            WLLW = (4/80)*              (1/77)  = .000649351
+            LWWL =        (3/79)*(2/78)         = .00097371
+            LWLW =        (3/79)       *(1/77)  = .000493178
+            LLWW =               (2/78)*(1/77)  = .000333
+
+            .000000632+
+            .000048685+
+            .000024659+
+            .00001665+
+            .000012646+
+            .001898734+
+            .001282051+
+            .000649351+
+            .00097371+
+            .000493178+
+            .000333=.005733296
+
+            // hmmm
+
+            .005733296 * 2 is correct. I wonder if this is 
+            the number of wins needed or just the double?
+
+        {
+            entrants: 80,
+            winners: 4,
+            tickets: 2,
+            friends: 5
+        }
+
+        Simulated prob: 0.0004931
+
+        // 3 wins needed
+
+        4 wins (1 case):
+        WWWW = (4/80)*(3/79)*(2/78)*(1/77)  = .000000632 
+        
+        3 wins:
+        WWWL = (4/80)*(3/79)*(2/78)         = .000048685
+        WWLW = (4/80)*(3/79)       *(1/77)  = .000024659
+        WLWW = (4/80)       *(2/78)*(1/77)  = .00001665
+        LWWW =        (3/79)*(2/78)*(1/77)  = .000012646
+
+
+        .000000632+
+        .000048685+
+        .000024659+
+        .00001665+
+        .000012646=.000103272        
+        
+    */
+
+
+
+        Might be easier to go with the lose cases (more efficent too):
+
+            4 losses:
+            LLLL = (76/80)*(75/79)*(74/78)*(73/77) = .811198295
+
+            3 losses:
+            LLLW = (76/80)*(75/79)*(74/78)         = .855647517
+            LLWL = (76/80)*(75/79)        *(73/77) = .855046852 
+            LWLL = (76/80)        *(74/78)*(73/77) = .854462204
+            WLLL =         (75/79)*(74/78)*(73/77)=  .853892943
+
+        
+
+
+
+            
+
+
+    'Case 10/10/5/1': {
+
+        topic: function() {
+            lottery.canWeGetTickets({
+                entrants: 10,
+                winners: 10,
+                tickets: 5,
+                friends: 1
+            }, this.callback);
+        },
+
+        
+        'returns correct probability': function (probability) {
+            assert.equal(probability, 1.000000000)
+        },
+    },
+
+    'Case 10/6/1/6': {
+
+        // Case: 10 deltagare, vårt gäng är 6 personer.
+        // Sex vinnare, on en biljett per person, 
+        // så vi måste vinna alla dragningar.
+
+        // D1: Vi är 6, de är 4.
+        // 6/(6+4) = 6/10 = 0.6
+
+        // D2: Vi är 5, de är 4. (1 biljett)
+        // 5/(5+4) = 5/9  = 0.555555556
+
+        // D3: Vi är 4, de är 4. (2 biljetter)
+        // 4/(4+4) = 4/8 = 0.5 
+
+        // D4: Vi är 3, de är 4. (3 biljetter)
+        // 3/(3+4) = 3/7 = 0.428571429
+
+        // D5: Vi är 2, de är 4. (4 biljetter)
+        // 2/(2+4) = 2/6 = 0.333333333 
+
+        // D6: Vi är 1, de är 4. (5 biljetter)
+        // 1/(1+4)=  1/5 = 0.2
+
+        //  0.6 * 0.555555556 * 0.5 * 0.428571429 * 
+        //  0.333333333 * 0.2 = .004761905
+
+        topic: function() {
+
+            lottery.canWeGetTickets(, this.callback);
+        },
+
+        'returns correct probability': function (probability) {
+            assert.equal(probability, 0.0047619048)
+        },
+    },
+
+/*
+
+    'Case 20/2/1/2': {
+
+        // Case: 20 deltagare, 2 vinnare, 2 biljetter per person, 4 vänner.
+
+        // Vi har fyra personer, men bara två behöver vinna.
+        // winsNeeded: 2
+        // total possible wins: 2
+        
+        // Hur stor är chansen att de andra personerna förlorar?
+        // det är förlustchansen i den första dragningen 
+        // gånger förlustchansen i den andra dragningen.
+        
+        // Men om det såg ut så här i stället?
+        // Case: 20 deltagare, 2 vinnare, 4 biljetter per person, 4 vänner.
+
+        // winsNeeded: 1
+        // possibleWins: 2
+        // Hur stor är chanes att de andra personerna förlorar?
+        // Det är förlustchansen i den första dragningen.
+
+        // 
+
+       
+
+        topic: function() {
+            lottery.canWeGetTickets({
+                entrants: 20,
+                winners: 2,
+                tickets: 2,
+                friends: 4
+            }, this.callback);
+        },
+
+        'returns correct probability': function (probability) {
+            assert.equal(probability, 0.1909090909)
+        },
+    },*/
