@@ -128,27 +128,6 @@ vows.describe('canWeWin').addBatch({
     	}
     },
 
-    'generateScenarios': {
-        topic: function() {
-            return generateScenarios(4);
-        },
-
-        'correct': function(err, scenarios) {
-            if(err) throw err;
-            
-            assert.equal(scenarios.length, 16);
-            assert.isTrue(arrayContainsArray(scenarios, [1,1,1,1]));
-            assert.isTrue(arrayContainsArray(scenarios, [1,1,1,0]));
-            assert.isTrue(arrayContainsArray(scenarios, [1,1,0,0]));
-            assert.isTrue(arrayContainsArray(scenarios, [1,0,0,0]));
-            assert.isTrue(arrayContainsArray(scenarios, [1,0,1,0]));
-            assert.isTrue(arrayContainsArray(scenarios, [0,0,1,0]));
-            assert.isTrue(arrayContainsArray(scenarios, [0,0,0,0]));
-            assert.isTrue(arrayContainsArray(scenarios, [0,1,0,0]));
-        } 
-
-    },
-
     'filterScenarios': {
         topic: function() {
             return filterScenarios([
