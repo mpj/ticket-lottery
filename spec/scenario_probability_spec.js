@@ -2,8 +2,7 @@ var vows                = require('vows'),
     assert              = require('assert'),
     generateScenarios   = require('../lib/generate_scenarios'),
     filterScenarios     = require('../lib/filter_scenarios'),
-    scenarioProbability = require('../lib/scenario_probability')
-    lottery             = require('../lib/lottery');
+    scenarioProbability = require('../lib/scenario_probability');
 
 vows.describe('calculateScenarioProbability').addBatch({
 

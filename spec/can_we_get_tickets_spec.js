@@ -1,37 +1,37 @@
 var vows                = require('vows'),
     assert              = require('assert'),
     isPlausible         = require('./helpers/is_plausible'),
-    lottery             = require('../lib/lottery');
+    canWeGetTickets     = require('../lib/can_we_get_tickets');
 
-vows.describe('canWeWin').addBatch({
+vows.describe('canWeGetTickets').addBatch({
 
     '100 entrants (just me, single winner, infinite tickets)':
-        createGetTickersContext({
+        plausibleGetTicketsContext({
                 entrants: 100
         }),
 
     '100 entrants, 2 friends (single winner, infinite tickets)': 
-        createGetTickersContext({
+        plausibleGetTicketsContext({
             entrants: 100,
             friends: 2
         }),
 
     '100 entrants, 2 friends, 10 winners (infinite tickets)': 
-        createGetTickersContext({
+        plausibleGetTicketsContext({
             entrants: 100,
             friends: 2,
             winners: 10
         }),
 
     '10 entrants, 1 friends, 10 winners (infinite tickets)': 
-        createGetTickersContext({
+        plausibleGetTicketsContext({
             entrants: 10,
             winners: 10,
             friends: 1
         }),
 
     '100 entrants, 2 friends, 10 winners, 1 tickets each': 
-        createGetTickersContext({
+        plausibleGetTicketsContext({
             entrants: 100,
             friends: 2,
             winners: 10,
@@ -39,7 +39,7 @@ vows.describe('canWeWin').addBatch({
         }),
 
     '10 entrants, 6 friends, 6 winners, 1 tickets each': 
-        createGetTickersContext({
+        plausibleGetTicketsContext({
             entrants: 10,
             winners: 6,
             tickets: 1,
@@ -47,7 +47,7 @@ vows.describe('canWeWin').addBatch({
         }),
 
     '80 entrants, 4 friends, 4 winners, 2 tickets each': 
-        createGetTickersContext({
+        plausibleGetTicketsContext({
             entrants: 80,
             winners: 4,
             tickets: 2,
@@ -55,7 +55,7 @@ vows.describe('canWeWin').addBatch({
         }),
 
     '80 entrants, 5 friends, 4 winners, 2 tickets each': 
-        createGetTickersContext({
+        plausibleGetTicketsContext({
             entrants: 80,
             winners: 4,
             tickets: 2,
@@ -64,7 +64,7 @@ vows.describe('canWeWin').addBatch({
 
     
     '100 entrants, 9 friends, 10 winners, 3 tickets each': 
-        createGetTickersContext({
+        plausibleGetTicketsContext({
             entrants: 100,
             winners: 10,
             tickets: 3,
@@ -73,11 +73,13 @@ vows.describe('canWeWin').addBatch({
 
 }).export(module); 
 
-function createGetTickersContext(opts) {
+// Simple Vows macro to make the specs a bit 
+// nicer. (See http://vowsjs.org/#-macros)
+function plausibleGetTicketsContext(opts) {
     return {
         topic: function() {
         	var context = this;
-            lottery.canWeGetTickets(opts, function(err, probability) {
+            canWeGetTickets(opts, function(err, probability) {
             	isPlausible(probability, opts, context.callback);
             });
         },
