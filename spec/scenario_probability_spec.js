@@ -1,7 +1,6 @@
 var vows                = require('vows'),
     assert              = require('assert'),
     generateScenarios   = require('../lib/generate_scenarios'),
-    filterScenarios     = require('../lib/filter_scenarios'),
     scenarioProbability = require('../lib/scenario_probability');
 
 vows.describe('calculateScenarioProbability').addBatch({
@@ -42,8 +41,7 @@ vows.describe('calculateScenarioProbability').addBatch({
     'calculateScenarioProbability 3': {
     	
     	topic: function() {
-    		var scenarios10Winners = generateScenarios(10);
-			var scenariosWhereWeGetEnoughTickets = filterScenarios(scenarios10Winners, 1, 2);
+    		var scenariosWhereWeGetEnoughTickets = generateScenarios(10, 1, 2);
     		var totalProb = 0;
     		for (var i=0;i<scenariosWhereWeGetEnoughTickets.length;i++) {
     			var s = scenariosWhereWeGetEnoughTickets[i];
