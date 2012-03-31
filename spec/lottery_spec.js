@@ -4,22 +4,6 @@ var vows    = require('vows'),
 
 vows.describe('canWeWin').addBatch({
 
-    /*
-    'Simulate': {
-        topic: function() {
-            return simulateDrawing({
-                entrants: 10,
-                winners: 6,
-                tickets: 1,
-                friends: 6
-            })
-        },
-
-        'Debugging': function(res) {
-            console.log("res", res)
-        }
-    },*/
-
     '100 entrants (just me, single winner, infinite tickets)':
         createGetTickersContext({
                 entrants: 100
@@ -77,31 +61,66 @@ vows.describe('canWeWin').addBatch({
             friends: 5
         }),
 
-    /*
+    
     '100 entrants, 9 friends, 10 winners, 3 tickets each': 
         createGetTickersContext({
             entrants: 100,
             winners: 10,
             tickets: 3,
             friends: 9
-        }),*/
+        }),
 
-    'calculateCaseProbability 1': {
-        topic: function() {
-           return lottery.calculateCaseProbability(80, 4, [1,1,1,1])
-        },
-        'should calculate correct probability': function(prob) {
-            assert.equal(prob, 6.322791132917715e-7)
-        }
+
+    'calculateScenarioProbability 1': {
+    	
+    	topic: function() {
+    		var p1 = lottery.calculateScenarioProbability([ 1, 0 ], 2, 100)
+    		var p2 = lottery.calculateScenarioProbability([ 1, 1 ], 2, 100)
+    		var p3 = lottery.calculateScenarioProbability([ 0, 1 ], 2, 100)
+    		var p4 = lottery.calculateScenarioProbability([ 0, 0 ], 2, 100)
+    		return p1+p2+p3+p4
+    	},
+
+    	'should be 1': function(prob) {
+    		assert.equal(prob, 1)
+    	}
     },
 
-    'calculateCaseProbability 2': {
-        topic: function() {
-           return lottery.calculateCaseProbability(80, 4, [1,1,0,1])
-        },
-        'should calculate correct probability': function(prob) {
-            assert.equal(prob, 0.000024658885418379094)
-        }
+    'calculateScenarioProbability 2': {
+    	
+    	topic: function() {
+    		var scenarios10Winners = lottery.generateCases(10)
+    		var totalProb = 0
+    		for (var i=0;i<scenarios10Winners.length;i++) {
+    			var s = scenarios10Winners[i]
+    			totalProb += lottery.calculateScenarioProbability(s, 2, 100)
+    		}
+
+    		return totalProb
+    	},
+
+    	'should be 1': function(prob) {
+    		assert.equal(prob, 1)
+    	}
+    },
+
+    'calculateScenarioProbability 3': {
+    	
+    	topic: function() {
+    		var scenarios10Winners = lottery.generateCases(10)
+			var scenariosWhereWeGetEnoughTickets = lottery.filterCases(scenarios10Winners, 1, 2)
+    		var totalProb = 0
+    		for (var i=0;i<scenariosWhereWeGetEnoughTickets.length;i++) {
+    			var s = scenariosWhereWeGetEnoughTickets[i]
+    			totalProb += lottery.calculateScenarioProbability(s, 2, 100)
+    		}
+
+    		return totalProb
+    	},
+
+    	'should be correct': function(prob) {
+    		assert.equal(prob, 0.19090909090909097)
+    	}
     },
 
     'generateCases': {
@@ -168,11 +187,12 @@ function isPlausible(result, opts) {
     var simulatedProbability = simulateDrawing(opts)
     
     // UNCOMMENT TO DEBUG
+    /*
     var errMargin = Math.round((result / simulatedProbability) * 100)
     console.log("Checking result" , result, 
         "against simulation", simulatedProbability,
         "("+errMargin+"% error)"
-        )
+        )*/
     
     var absoluteError = 0.001
     return (result < simulatedProbability + absoluteError) &&

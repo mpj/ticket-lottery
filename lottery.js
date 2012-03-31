@@ -6,38 +6,60 @@ exports.canWeGetTickets = function (opts, cb) {
 	var friends  = opts.friends ? opts.friends : 1;
 	var tickets  = opts.tickets ? opts.tickets : 99;
 
-	if (tickets >= friends) {
-		// One win needed
-		winProbability = chanceOfWinning(entrants,winners,friends)
-		cb(null, winProbability.toFixed(10))
-	} else {
-		// Less friends than tickets. 
-		// This means that we need to win more than one time.
-		var winsNeeded = Math.ceil( friends / tickets);
-		var cases = module.exports.filterCases(
-			module.exports.generateCases(friends), winsNeeded)
-		winProbability = 0;
-		for (var i=0;i<cases.length;i++) {
-			winProbability += 
-				module.exports.
-					calculateCaseProbability(entrants, winners, cases[i])
-		}
-		if (winsNeeded != friends) 
-			winProbability *= 2
-	       
-
-		cb(null, winProbability.toFixed(10))
+	// Less friends than tickets. 
+	// This means that we need to win more than one time.
+	var winsNeeded = Math.ceil( friends / tickets);
+	var cases = module.exports.filterCases(
+		module.exports.generateCases(winners), winsNeeded, friends)
+	
+	winProbability = 0;
+	for (var i=0;i<cases.length;i++) {
+		winProbability += 
+			module.exports.
+				calculateScenarioProbability(cases[i], friends, entrants)
 	}
+       
+
+	cb(null, winProbability.toFixed(10))
 
 }
 
-module.exports.calculateCaseProbability = function(entrants, winners, caseArr) {
-	var prob = 1
-	for (var i=0;i<caseArr.length;i++) {
-		var isWin = !!caseArr[i];
-		if(isWin) // Skip over case unless we are winner
-			prob *= (winners-i) / (entrants-i)
+// @scenario: An array of boolean values that reflects whether
+// the friends group won or not. Example: [ 1, 0, 0, 0, 1, 0 ] represents
+// a scenario where 6 winners are drawn, where the friends won in the first 
+// drawing, then lost 3 drawings,
+// and then won again, and finally lost the final drawing. 
+// @friends: The number of friends in the drawing. 
+// @participants: The number of participants in the lottery, including friends.
+
+module.exports.calculateScenarioProbability = 
+	function(scenario, friends, participants ) {
+	
+	var prob = 1 
+	var friendsLeftInCompetition = friends
+	var totalPartipantsLeft = participants
+
+	for (var i=0;i<scenario.length;i++) {
+		var probabilityOfFriendsWinning = 
+			friendsLeftInCompetition / totalPartipantsLeft;
+
+		var friendsWinThisDrawing = !!scenario[i];
+		if(friendsWinThisDrawing) {
+			prob *= probabilityOfFriendsWinning;
+			friendsLeftInCompetition--;
+		} else {
+			// In in drawings where the friends are 
+			// supposed to lose, we invert the probability
+			// of the friends winning.
+			prob *= 1-probabilityOfFriendsWinning
+		}
+		totalPartipantsLeft--
+
 	}
+
+	// I THINK it's vital to include the final value even in the friends lose,
+	// because we are calculting this apart from whether or not it's positive
+	// whether or not the friends lose or not.
 	return prob;
 }
 
@@ -73,10 +95,7 @@ module.exports.filterCases = function(cases, winsMinimum, winsMaximum) {
 		var wins = winCount(cases[i]);
 		if (wins >= winsMinimum && wins <= winsMaximum)
 			filteredCases.push(cases[i])
-	}
-		
-
-			
+	}	
 	return filteredCases;
 }
 
