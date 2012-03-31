@@ -54,7 +54,7 @@ vows.describe('calculateScenarioProbability').addBatch({
     	},
 
     	'should be 0.19090909090909097': function(prob) {
-    		assert.equal(prob, 0.19090909090909097);
+    		assert.equal(prob.toFixed(10), 0.1909090909);
     	}
     }
 
