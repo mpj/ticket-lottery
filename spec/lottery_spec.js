@@ -1,7 +1,7 @@
 var vows    = require('vows'),
     assert  = require('assert'),
     lotterySimulator = require('./helpers/lottery_simulator'),
-    lottery = require('../lottery');
+    lottery = require('../lib/lottery');
 
 vows.describe('canWeWin').addBatch({
 
