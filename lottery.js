@@ -108,26 +108,5 @@ function winCount(caseArr) {
 	return count
 }
 
-// Calculate the chance of a single person winning a draw, 
-// given a certain amount of participants and drawings.
-function chanceOfWinning(participants, winners, friends) {
-	return 1-chanceOfLosing(participants, winners, friends)
-}
-
-function chanceOfLosing(participants, winners, friends) {
-	
-	if(!friends) friends = 1
-
-	var loseProbability = 1;
-	var participantsLeft = participants
-	for (var i=0;i<winners;i++) {
-		p = (participantsLeft-friends) / (participantsLeft);
-		
-		loseProbability *= p
-		participantsLeft--
-	}
-	return loseProbability
-}
-
 
 
