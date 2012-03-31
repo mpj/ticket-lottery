@@ -1,9 +1,10 @@
-var vows    = require('vows'),
-    assert  = require('assert'),
-    lotterySimulator = require('./helpers/lottery_simulator'),
-    generateScenarios = require('../lib/generate_scenarios'),
-    filterScenarios = require('../lib/filter_scenarios')
-    lottery = require('../lib/lottery');
+var vows                = require('vows'),
+    assert              = require('assert'),
+    lotterySimulator    = require('./helpers/lottery_simulator'),
+    generateScenarios   = require('../lib/generate_scenarios'),
+    filterScenarios     = require('../lib/filter_scenarios'),
+    scenarioProbability = require('../lib/scenario_probability')
+    lottery             = require('../lib/lottery');
 
 vows.describe('canWeWin').addBatch({
 
@@ -77,10 +78,10 @@ vows.describe('canWeWin').addBatch({
     'calculateScenarioProbability 1': {
     	
     	topic: function() {
-    		var p1 = lottery.calculateScenarioProbability([ 1, 0 ], 2, 100)
-    		var p2 = lottery.calculateScenarioProbability([ 1, 1 ], 2, 100)
-    		var p3 = lottery.calculateScenarioProbability([ 0, 1 ], 2, 100)
-    		var p4 = lottery.calculateScenarioProbability([ 0, 0 ], 2, 100)
+    		var p1 = scenarioProbability([ 1, 0 ], 2, 100)
+    		var p2 = scenarioProbability([ 1, 1 ], 2, 100)
+    		var p3 = scenarioProbability([ 0, 1 ], 2, 100)
+    		var p4 = scenarioProbability([ 0, 0 ], 2, 100)
     		return p1+p2+p3+p4
     	},
 
@@ -96,7 +97,7 @@ vows.describe('canWeWin').addBatch({
     		var totalProb = 0
     		for (var i=0;i<scenarios10Winners.length;i++) {
     			var s = scenarios10Winners[i]
-    			totalProb += lottery.calculateScenarioProbability(s, 2, 100)
+    			totalProb += scenarioProbability(s, 2, 100)
     		}
 
     		return totalProb
@@ -115,7 +116,7 @@ vows.describe('canWeWin').addBatch({
     		var totalProb = 0
     		for (var i=0;i<scenariosWhereWeGetEnoughTickets.length;i++) {
     			var s = scenariosWhereWeGetEnoughTickets[i]
-    			totalProb += lottery.calculateScenarioProbability(s, 2, 100)
+    			totalProb += scenarioProbability(s, 2, 100)
     		}
 
     		return totalProb
