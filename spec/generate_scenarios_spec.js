@@ -41,6 +41,22 @@ vows.describe('generateScenarios').addBatch({
             assertContainsArray(scenarios, [0,1,0,0]);
         } 
 
+    },  
+
+    'generateScenarios enourmous case': {
+        topic: function() {
+            this.startTime = new Date().getTime();
+            return generateScenarios(17);
+        },
+
+        'Should generate possible scenarios': function(err, scenarios) {
+            if(err) throw err;
+            var endTime = new Date().getTime();
+            var duration = endTime-this.startTime;
+            assert.isTrue(duration < 1000);
+            
+        } 
+
     },   
 
 
