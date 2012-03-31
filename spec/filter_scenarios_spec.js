@@ -1,6 +1,5 @@
 var vows                = require('vows'),
-    assert              = require('assert'),
-    arrayContainsArray  = require('./helpers/array_contains_array'),
+    assertContainsArray = require('./helpers/assert_contains_array'),
     filterScenarios     = require('../lib/filter_scenarios')
 
 vows.describe('filterScenarios').addBatch({
@@ -18,14 +17,15 @@ vows.describe('filterScenarios').addBatch({
         },
 
         'Should return all scenarios with 3 or more wins': function(filtered) {
-            assert.equal(filtered.length, 4);
-            assert.isTrue(arrayContainsArray(filtered, [1,0,1,0,1,1]));
-            assert.isTrue(arrayContainsArray(filtered, [0,0,1,0,1,1]));
-            assert.isTrue(arrayContainsArray(filtered, [1,0,1,0,1,1]));
-            assert.isTrue(arrayContainsArray(filtered, [1,1,0,1,0,1]));
+            assert.equal( filtered.length, 4 );
+            assertContainsArray( filtered, [1,0,1,0,1,1] );
+            assertContainsArray( filtered, [0,0,1,0,1,1] );
+            assertContainsArray( filtered, [1,0,1,0,1,1] );
+            assertContainsArray( filtered, [1,1,0,1,0,1] );
         }
 
     }
 
 }).export(module); 
+
 

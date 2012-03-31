@@ -1,6 +1,5 @@
 var vows                = require('vows'),
     assert              = require('assert'),
-    arrayContainsArray  = require('./helpers/array_contains_array'),
     isPlausible         = require('./helpers/is_plausible'),
     lottery             = require('../lib/lottery');
 
