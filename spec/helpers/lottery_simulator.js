@@ -1,9 +1,11 @@
-function isPlausible(result, opts) {
-    var simulatedProbability = simulateDrawing(opts)
-    
-    var errorMargin = 0.001
-    return (result < simulatedProbability + errorMargin) &&
-           (result > simulatedProbability - errorMargin);
+function isPlausible(result, opts, cb) {
+    var simulatedProbability = simulateDrawing(opts, function(simulationResult) {
+    	var errorMargin = 0.001
+    	cb(
+    	   (result < simulationResult + errorMargin) &&
+           (result > simulationResult - errorMargin)
+        )
+    })
 }
 
 function simulateDrawing(opts, cb) {
@@ -27,7 +29,7 @@ function simulateDrawing(opts, cb) {
             wins++;
         }
     }
-    return wins/drawings;
+    cb(wins/drawings);
 }
 
 function randomInRange(min, max){

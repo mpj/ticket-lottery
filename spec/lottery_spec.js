@@ -174,12 +174,14 @@ vows.describe('canWeWin').addBatch({
 function createGetTickersContext(opts) {
     return {
         topic: function() {
-            lottery.canWeGetTickets(opts, this.callback);
+        	var cb = this.callback
+            lottery.canWeGetTickets(opts, function(err, probability) {
+            	lotterySimulator.isPlausible(probability, opts, cb)
+            });
         },
 
-        'returns plausible probability': function (probability) {
-            assert.isTrue(
-            	lotterySimulator.isPlausible(probability, opts))
+        'returns plausible probability': function (isPlausibleResult) {
+            assert.isTrue(isPlausibleResult)
         }
     }
 }
