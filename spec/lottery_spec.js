@@ -131,18 +131,18 @@ vows.describe('canWeWin').addBatch({
             return generateScenarios(4)
         },
 
-        'correct': function(err, cases) {
+        'correct': function(err, scenarios) {
             if(err) throw err;
             
-            assert.equal(cases.length, 16)
-            assert.isTrue(arrayContainsArray(cases, [1,1,1,1]))
-            assert.isTrue(arrayContainsArray(cases, [1,1,1,0]))
-            assert.isTrue(arrayContainsArray(cases, [1,1,0,0]))
-            assert.isTrue(arrayContainsArray(cases, [1,0,0,0]))
-            assert.isTrue(arrayContainsArray(cases, [1,0,1,0]))
-            assert.isTrue(arrayContainsArray(cases, [0,0,1,0]))
-            assert.isTrue(arrayContainsArray(cases, [0,0,0,0]))
-            assert.isTrue(arrayContainsArray(cases, [0,1,0,0]))
+            assert.equal(scenarios.length, 16)
+            assert.isTrue(arrayContainsArray(scenarios, [1,1,1,1]))
+            assert.isTrue(arrayContainsArray(scenarios, [1,1,1,0]))
+            assert.isTrue(arrayContainsArray(scenarios, [1,1,0,0]))
+            assert.isTrue(arrayContainsArray(scenarios, [1,0,0,0]))
+            assert.isTrue(arrayContainsArray(scenarios, [1,0,1,0]))
+            assert.isTrue(arrayContainsArray(scenarios, [0,0,1,0]))
+            assert.isTrue(arrayContainsArray(scenarios, [0,0,0,0]))
+            assert.isTrue(arrayContainsArray(scenarios, [0,1,0,0]))
 
         } 
 
@@ -160,7 +160,7 @@ vows.describe('canWeWin').addBatch({
             ], 3)
         },
 
-        'should return all cases with 3 or more wins': function(filtered) {
+        'should return all scenarios with 3 or more wins': function(filtered) {
             assert.equal(filtered.length, 4)
             assert.isTrue(arrayContainsArray(filtered, [1,0,1,0,1,1]))
             assert.isTrue(arrayContainsArray(filtered, [0,0,1,0,1,1]))
