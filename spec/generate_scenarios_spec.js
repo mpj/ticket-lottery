@@ -4,7 +4,25 @@ var vows                 = require('vows'),
 
 vows.describe('generateScenarios').addBatch({
 
-    'generateScenarios basic case': {
+
+    'generateScenarios mini case': {
+        topic: function() {
+            return generateScenarios(2);
+        },
+
+        'Should generate possible scenarios': function(err, scenarios) {
+            if(err) throw err;
+            
+            assert.equal(scenarios.length, 4);
+            assertContainsArray(scenarios, [1,1]);
+            assertContainsArray(scenarios, [1,0]);
+            assertContainsArray(scenarios, [0,1]);
+            assertContainsArray(scenarios, [0,0]);
+        } 
+
+    },  
+
+    'generateScenarios bigger case': {
         topic: function() {
             return generateScenarios(4);
         },
@@ -23,7 +41,10 @@ vows.describe('generateScenarios').addBatch({
             assertContainsArray(scenarios, [0,1,0,0]);
         } 
 
-    },    
+    },   
+
+
+
 
 }).export(module); 
 
