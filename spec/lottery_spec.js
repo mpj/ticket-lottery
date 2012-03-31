@@ -1,7 +1,8 @@
 var vows    = require('vows'),
     assert  = require('assert'),
     lotterySimulator = require('./helpers/lottery_simulator'),
-    generateScenarios = require('../lib/generate_scenarios')
+    generateScenarios = require('../lib/generate_scenarios'),
+    filterScenarios = require('../lib/filter_scenarios')
     lottery = require('../lib/lottery');
 
 vows.describe('canWeWin').addBatch({
@@ -110,7 +111,7 @@ vows.describe('canWeWin').addBatch({
     	
     	topic: function() {
     		var scenarios10Winners = generateScenarios(10)
-			var scenariosWhereWeGetEnoughTickets = lottery.filterCases(scenarios10Winners, 1, 2)
+			var scenariosWhereWeGetEnoughTickets = filterScenarios(scenarios10Winners, 1, 2)
     		var totalProb = 0
     		for (var i=0;i<scenariosWhereWeGetEnoughTickets.length;i++) {
     			var s = scenariosWhereWeGetEnoughTickets[i]
@@ -147,9 +148,9 @@ vows.describe('canWeWin').addBatch({
 
     },
 
-    'filterCases': {
+    'filterScenarios': {
         topic: function() {
-            return lottery.filterCases([
+            return filterScenarios([
                 [1,0,1,0,1,1],
                 [0,0,1,0,1,1],
                 [0,0,0,0,1,1],
