@@ -1,9 +1,9 @@
 var vows                = require('vows'),
     assert              = require('assert'),
     isPlausible         = require('./helpers/is_plausible'),
-    canWeGetTickets     = require('../lib/can_we_get_tickets');
+    canHasTickets       = require('../lib/can_has_tickets');
 
-vows.describe('canWeGetTickets').addBatch({
+vows.describe('canHasTickets').addBatch({
 
     '100 entrants (just me, single winner, infinite tickets)':
         plausibleGetTicketsContext({
@@ -79,7 +79,7 @@ function plausibleGetTicketsContext(opts) {
     return {
         topic: function() {
         	var context = this;
-            canWeGetTickets(opts, function(err, probability) {
+            canHasTickets(opts, function(err, probability) {
             	isPlausible(probability, opts, context.callback);
             });
         },
