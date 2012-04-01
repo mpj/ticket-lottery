@@ -1,0 +1,50 @@
+Mattias solution to the ticket lottery problem.
+--------------------------------------------------
+
+I absolutely LOVED this problem. Even though probability problems makes my brain bleed, there is just something sadomasochistic about them that gets me riled up. The Monty Hall Problem and the Birthday problem fills me with both anger and entices me at the same time. :P
+
+It took me a while to figure out that to cover all possible inputs, one first needs to figure out *all possible scenarios* where the group of friends can win enough times to purchase tickets for the entire group.
+
+Example 1:
+
+	* 2 friends enter the lottery
+	* 4 winners are drawn
+	* Each winner is allowed to buy 2 tickets, so the the friends only needs to win 1 time.
+
+	Good: WWLL, WLWL, LWWL, LLWW, WLLL, LWLL, LLWL, LLLW
+	Bad: LLLL
+	(W = Friends winning, L = Someone else winning )
+
+Example 2: 
+	
+	Consider the same case, but if each winner was only allowed to buy 1 ticket - in that case, the friends needs to win 2 times:
+
+	Good: WWLL, WLWL, LWWL, LLWW
+	Bad: WLLL, LWLL, LLWL, LLLW, LLLL
+
+Once we've figured out all "good" cases, we need to calculate the probability for each single one, and then combine the probability of all cases into one, giving us the total probability of going the the musical!
+
+1: Generating scenarios
+-----------------------------------
+So, the first part of the problem is figuring out which these scenarios are. My solution to this is in lib/generate_scenarios.js, and has specs in spec/generate_scenarios_spec.js.
+
+I initially just grew a binary tree, consisting of all possible scenarios, and picked the ones that were "good" scenarios. This worked for small cases, but when drawn winners per lottery increased or the size of the friends group increased, the size of the tree became astronomical.
+
+I currently manage this by making the tree growing algorithm a bit more clever, so that it could predict when a branch would only lead to "bad" scenarios, and stop growing that branch further. This performs much, much better and can handle well over a hundred drawn winners as long as the group of friends isn't too big. You can play with the input numbers in "generateScenarios bigger performance case" in generate_scenarios_spec.js to see how it performs.
+
+While I think this algorithm performs fast enough for most real-world cases, it could definetly be optimized further. I have restricted myself from doing this in favour of actually turning in my job application, but further investigations would probably include:
+
+1. Predicting if the friends are more likely to win or lose. If they are more likely to win, it will be way faster to grow a tree of "bad" scenarios and then inverse the probability of the result.
+2. Search for exising algorithms to similiar problems. Perhaps anagrams, or password cracking algorithms can give some inspiration. 
+3. Re-read my books on traversing trees, would probably spark some genius in my dirty brain.
+
+
+2. Calculating probability
+-------------------------------------
+Once we have the scenarios, we need to calculate the probabily for each one occuring, and I do this in scenario_probability.js. I view each scenario as a sequence of drawings - in each of the drawings, either the friends or the others are supposed to win. For each drawing, we have one less participant, and if there is a  previous win in the scenario, one less friend too. 
+
+3. All together now
+--------------------------------------
+Once we can calculate the probability, the rest is easy - we just add them all up in can_has_tickets.js. Boom!
+
+Took me a while to figure this one out, very good problem! 
